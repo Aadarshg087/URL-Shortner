@@ -9,10 +9,15 @@ function createRandomString(num) {
 
   return s;
 }
-
+function fixURL(url) {
+  if (!url.startsWith("https://") && !url.startsWith("http://")) {
+    url = "https://" + url;
+  }
+  return url;
+}
 async function getShortLink(req, res) {
   try {
-    const { redirectURL } = req.body;
+    let { redirectURL } = req.body;
     if (!redirectURL) {
       return res.status(400).json({
         error: "URL is required",
@@ -20,6 +25,9 @@ async function getShortLink(req, res) {
     }
     const size = 8;
     const shortID = createRandomString(size);
+
+    redirectURL = fixURL(redirectURL);
+
     const entry = await url.create({
       shortID,
       redirectURL,
@@ -36,12 +44,18 @@ async function getShortLink(req, res) {
     });
   } catch (error) {
     // throw new Error("Something went wrong", error);
+    console.log("Something went wrong", error);
+
+    return res
+      .status(400)
+      .json({ error: "Something went wrong in while creating the link" });
   }
 }
 
 async function redirectRequest(req, res) {
   try {
-    const shortID = req.params.shortID;
+    const shortID = await req.params.shortID;
+
     if (!shortID) {
       return res.status(400).json({
         error: "Provide Shorten URL",
@@ -49,7 +63,7 @@ async function redirectRequest(req, res) {
     }
     const entry = await url.findOneAndUpdate(
       {
-        shortID,
+        shortID: shortID,
       },
       {
         $push: {
@@ -64,10 +78,10 @@ async function redirectRequest(req, res) {
     if (!entry) {
       return res.status(404).json({ error: "Short URL not found" });
     }
+    // console.log(entry);
 
-    res.redirect(entry.redirectURL);
+    return res.redirect(`${entry.redirectURL}`);
   } catch (error) {
-    // throw new Error("Something went wrong", error);
     console.log("Something went wrong", error);
     return res.status(500).json({ error: "Something went wrong" });
   }
