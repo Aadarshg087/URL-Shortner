@@ -1,4 +1,23 @@
-:root {
+@import "tailwindcss";
+
+@layer utilities {
+  .bg-header-blue {
+    background-color: #3359aa;
+  }
+
+  .header-tcolor {
+    color: #e7e8d0;
+  }
+
+  .body-bg {
+    background-color: #c8dafc;
+  }
+
+  .body-text-color {
+    color: #3a2f4b;
+  }
+}
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +84,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
