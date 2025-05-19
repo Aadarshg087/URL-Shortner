@@ -1,11 +1,13 @@
-import express from "express";
-import {
+const express = require("express");
+
+const {
   getShortLink,
   redirectRequest,
-} from "../controllers/url.controllers.js";
-const router = express.Router();
+} = require("../controllers/url.controllers.js");
 
-router.post("/shorten", getShortLink);
-router.get("/:shortID", redirectRequest);
+const urlRouter = express.Router();
 
-export { router };
+urlRouter.post("/shorten", getShortLink);
+urlRouter.get("/:shortID", redirectRequest);
+
+module.exports = { urlRouter };

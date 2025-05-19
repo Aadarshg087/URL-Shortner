@@ -1,4 +1,5 @@
-import url from "../model/url.model.js";
+// import url from "../model/url.model.js";
+const url = require("../model/url.model.js");
 
 function createRandomString(num) {
   let s = "";
@@ -80,11 +81,12 @@ async function redirectRequest(req, res) {
     }
     // console.log(entry);
 
-    return res.redirect(`${entry.redirectURL}`);
+    return res.status(200).redirect(`${entry.redirectURL}`);
   } catch (error) {
     console.log("Something went wrong", error);
     return res.status(500).json({ error: "Something went wrong" });
   }
 }
 
-export { getShortLink, redirectRequest };
+// export { getShortLink, redirectRequest };
+module.exports = { getShortLink, redirectRequest };

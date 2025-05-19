@@ -1,14 +1,14 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
 
-import { router as urlRouter } from "./routes/url.routes.js";
+const { urlRouter } = require("./routes/url.routes");
 
 dotenv.config({
   path: ".env",
 });
 
-import connectDB from "./database/index.js";
+const connectDB = require("./database/index");
 
 const app = express();
 app.use(express.json({ urlextended: true }));
@@ -30,3 +30,5 @@ connectDB()
   .catch((err) => {
     console.log("Mongo Connection failed");
   });
+
+module.exports = app;
